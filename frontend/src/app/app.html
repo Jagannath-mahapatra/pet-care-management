@@ -1,0 +1,297 @@
+<div class="min-h-screen bg-[#fffaf3] text-slate-800">
+  <!-- Navigation -->
+  <nav class="bg-white border-b border-orange-100">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-full bg-orange-100 flex items-center justify-center text-2xl">
+          🐾
+        </div>
+
+        <div>
+          <h1 class="font-extrabold text-xl text-[#5b3a29]">PawCare</h1>
+
+          <p class="text-xs text-slate-500">Pet Health & Wellness</p>
+        </div>
+      </div>
+
+      <div class="hidden md:flex gap-6 text-sm font-medium">
+        <span class="text-orange-600"> Dashboard </span>
+
+        <span class="text-slate-500"> Pets </span>
+
+        <span class="text-slate-500"> Vaccinations </span>
+      </div>
+
+      <button
+        class="bg-[#7c5cff] text-white px-5 py-2.5 rounded-full font-semibold hover:bg-[#6849ed]"
+      >
+        + New Appointment
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="max-w-7xl mx-auto px-6 pt-8">
+    <div
+      class="rounded-3xl overflow-hidden relative min-h-[270px] flex items-center"
+      style="
+        background-image:
+          linear-gradient(
+            90deg,
+            rgba(91, 58, 41, 0.92),
+            rgba(91, 58, 41, 0.55),
+            rgba(91, 58, 41, 0.1)
+          ),
+          url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1400&q=80');
+        background-size: cover;
+        background-position: center;
+      "
+    >
+      <div class="relative z-10 px-8 md:px-12 py-10 max-w-2xl text-white">
+        <span
+          class="inline-block bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm mb-4"
+        >
+          🐶 Happy pets, healthier lives
+        </span>
+
+        <h2 class="text-3xl md:text-5xl font-extrabold leading-tight">
+          Caring for every
+          <span class="text-orange-300"> paw </span>
+          that walks through our door.
+        </h2>
+
+        <p class="mt-4 text-orange-50 max-w-xl">
+          Manage appointments, pet health records and vaccinations from one simple dashboard.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="max-w-7xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white rounded-2xl p-6 border border-orange-100 shadow-sm">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-sm text-slate-500">Total Appointments</p>
+
+            <p class="text-3xl font-extrabold text-[#5b3a29] mt-2">
+              {{ totalAppointments() }}
+            </p>
+          </div>
+
+          <span class="text-3xl"> 📅 </span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-orange-100 shadow-sm">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-sm text-slate-500">Scheduled</p>
+
+            <p class="text-3xl font-extrabold text-[#7c5cff] mt-2">
+              {{ scheduledCount() }}
+            </p>
+          </div>
+
+          <span class="text-3xl"> 🐕 </span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-orange-100 shadow-sm">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-sm text-slate-500">Completed</p>
+
+            <p class="text-3xl font-extrabold text-emerald-600 mt-2">
+              {{ completedCount() }}
+            </p>
+          </div>
+
+          <span class="text-3xl"> ❤️ </span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-orange-100 shadow-sm">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-sm text-slate-500">Cancelled</p>
+
+            <p class="text-3xl font-extrabold text-red-500 mt-2">
+              {{ cancelledCount() }}
+            </p>
+          </div>
+
+          <span class="text-3xl"> 🩺 </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Appointments -->
+  <section class="max-w-7xl mx-auto px-6 pb-10">
+    <div class="bg-white rounded-3xl border border-orange-100 shadow-sm overflow-hidden">
+      <!-- Section header -->
+      <div
+        class="p-6 border-b border-orange-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+      >
+        <div>
+          <h2 class="text-2xl font-bold text-[#5b3a29]">Today's Appointments</h2>
+
+          <p class="text-sm text-slate-500 mt-1">Manage your patients and their visits.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="text"
+            placeholder="Search pet, owner or doctor..."
+           [ngModel]="search()"
+(ngModelChange)="search.set($event); onSearch()"
+            class="border border-orange-200 rounded-xl px-4 py-3 w-full sm:w-72 outline-none focus:ring-2 focus:ring-purple-300"
+          />
+
+          <select
+            [ngModel]="selectedStatus()"
+(ngModelChange)="selectedStatus.set($event); onStatusChange()"
+            class="border border-orange-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-purple-300"
+          >
+            <option value="">All Status</option>
+
+            <option value="Scheduled">Scheduled</option>
+
+            <option value="Completed">Completed</option>
+
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      @if (loading()) {
+        <div class="p-12 text-center text-slate-500">🐾 Loading appointments...</div>
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-[#fff7ed]">
+              <tr>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-[#5b3a29]">Pet</th>
+
+                <th class="text-left px-6 py-4 text-sm font-semibold text-[#5b3a29]">Owner</th>
+
+                <th class="text-left px-6 py-4 text-sm font-semibold text-[#5b3a29]">
+                  Appointment
+                </th>
+
+                <th class="text-left px-6 py-4 text-sm font-semibold text-[#5b3a29]">Doctor</th>
+
+                <th class="text-left px-6 py-4 text-sm font-semibold text-[#5b3a29]">Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (appointment of appointments(); track appointment.id) {
+                <tr class="border-t border-orange-50 hover:bg-orange-50/40 transition">
+                  <!-- Pet -->
+                  <td class="px-6 py-5">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-11 h-11 rounded-full bg-orange-100 flex items-center justify-center text-xl"
+                      >
+                        {{ appointment.species === 'Cat' ? '🐱' : '🐶' }}
+                      </div>
+
+                      <div>
+                        <p class="font-bold text-slate-800">
+                          {{ appointment.pet_name }}
+                        </p>
+
+                        <p class="text-xs text-slate-500">
+                          {{ appointment.species }}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- Owner -->
+                  <td class="px-6 py-5">
+                    <p class="font-medium">
+                      {{ appointment.owner_name }}
+                    </p>
+
+                    <p class="text-xs text-slate-500">
+                      {{ appointment.owner_phone }}
+                    </p>
+                  </td>
+
+                  <!-- Date -->
+                  <td class="px-6 py-5">
+                    <p class="font-medium">
+                      {{ appointment.appointment_date }}
+                    </p>
+
+                    <p class="text-sm text-slate-500">
+                      {{ appointment.appointment_time }}
+                    </p>
+                  </td>
+
+                  <!-- Doctor -->
+                  <td class="px-6 py-5">
+                    <p class="font-medium">
+                      {{ appointment.doctor }}
+                    </p>
+
+                    <p class="text-xs text-slate-500">
+                      {{ appointment.reason }}
+                    </p>
+                  </td>
+
+                  <!-- Status -->
+                  <td class="px-6 py-5">
+                    <select
+                      [value]="appointment.status"
+                      (change)="updateStatus(appointment, $event)"
+                      class="rounded-full px-4 py-2 text-sm font-semibold border border-orange-200 outline-none bg-white"
+                    >
+                      <option value="Scheduled">Scheduled</option>
+
+                      <option value="Completed">Completed</option>
+
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center py-14 text-slate-500">
+                    <div class="text-5xl mb-3">🐾</div>
+
+                    No appointments found.
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#5b3a29] text-orange-100">
+    <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between gap-5">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-2xl"> 🐾 </span>
+
+          <span class="font-bold text-xl text-white"> PawCare </span>
+        </div>
+
+        <p class="text-sm mt-2 text-orange-200">
+          Making pet healthcare simple, caring and connected.
+        </p>
+      </div>
+
+      <div class="text-sm text-orange-200">© 2026 PawCare. Pet Health Management.</div>
+    </div>
+  </footer>
+</div>
